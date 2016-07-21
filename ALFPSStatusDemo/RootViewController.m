@@ -25,7 +25,8 @@
 
 - (void)endAction
 {
-    [[ALFPSStatus shareInstance] end];
+//    [[ALFPSStatus shareInstance] start];
+//    [[ALFPSStatus shareInstance] end];
 }
 
 @end

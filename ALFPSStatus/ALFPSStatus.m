@@ -79,9 +79,10 @@ static ALFPSStatus *shareInstance = nil;
         [self.displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
         
         self.fpsLabel = [[UILabel alloc] init];
-        self.fpsLabel.frame = CGRectMake(([UIScreen mainScreen].bounds.size.width - 50)/2.0+50, 0, 50, 20);
+        CGFloat screenWidth = CGRectGetWidth([UIScreen mainScreen].bounds);
+        self.fpsLabel.frame = CGRectMake((screenWidth - 55)/2.0+55, 0, 55, 20);
         self.fpsLabel.font = [UIFont boldSystemFontOfSize:12];
-        self.fpsLabel.textColor = [UIColor colorWithRed:0.33 green:0.84 blue:0.43 alpha:1];
+        self.fpsLabel.textColor = [UIColor magentaColor];
         self.fpsLabel.textAlignment = NSTextAlignmentRight;
         self.fpsLabel.backgroundColor = [UIColor clearColor];
     }
@@ -90,13 +91,13 @@ static ALFPSStatus *shareInstance = nil;
 
 - (void)displayLinkFired:(CADisplayLink *)link
 {
+    self.count++;
     if (self.lastTime == 0) {
         self.lastTime = link.timestamp;
         return;
     }
-    self.count++;
     NSTimeInterval interval = link.timestamp - self.lastTime;
-    if (interval < 1) {
+    if (interval < 1.0) {
         return;
     }
     self.lastTime = link.timestamp;
@@ -108,7 +109,7 @@ static ALFPSStatus *shareInstance = nil;
 - (void)start
 {
 #if TARGET_OS_SIMULATOR
-    NSLog(@"ALFPSStatus在模拟器下的数据是没有意义的");
+    NSLog(@"ALFPSStatus has been stoped.Because it would make no sense for the simulator device.");
     return;
 #endif
     if (self.window) {
@@ -156,7 +157,14 @@ static ALFPSStatus *shareInstance = nil;
 
 - (void)applicationDidFinishLaunchingNotification
 {
-    [self start];
+    if ([[UIDevice currentDevice].systemVersion floatValue] > 9.0) {
+        __weak typeof(self) weakSelf = self;
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [weakSelf start];
+        });
+    } else {
+        [self start];
+    }
 }
 
 @end
