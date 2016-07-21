@@ -9,6 +9,10 @@
 #import "ALFPSStatus.h"
 #import <UIKit/UIKit.h>
 
+#if !__has_feature(objc_arc)
+    #error This file must be compiled with ARC. Use -fobjc-arc flag (or convert project to ARC).
+#endif
+
 @interface ALFPSStatus ()
 
 @property (nonatomic, strong) UIWindow *window;
