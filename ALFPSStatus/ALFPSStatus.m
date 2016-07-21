@@ -115,7 +115,7 @@ static ALFPSStatus *shareInstance = nil;
 #if TARGET_OS_SIMULATOR
     NSLog(@"ALFPSStatus has been stoped.Because it would make no sense for the simulator device.");
     return;
-#endif
+#else
     if (self.window) {
         return;
     }
@@ -133,6 +133,7 @@ static ALFPSStatus *shareInstance = nil;
         [self.displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
     }
     self.displayLink.paused = NO;
+#endif
 }
 
 - (void)end
