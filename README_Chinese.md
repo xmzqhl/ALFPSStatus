@@ -8,10 +8,9 @@
 
 # 只支持ARC
 如果你仍在使用MRC，你就会在编译的时候得到一个编译错误，ALFPSStatus仅仅只有一个类，你可以添加编译标示符-fobjc-arc.
-***
+
 ## 支持所有的屏幕方向
 ## 支持所有的iPhone和iPad
-***
 
 # 注意
 只在DEBUG模式下使用ALFPSStatus,Release版本请移除。
