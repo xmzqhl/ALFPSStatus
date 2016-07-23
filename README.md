@@ -8,6 +8,8 @@ show FPS status on StatusBar
 
 # Support ARC only
 If you use MRC,you will get an error at compile time.
+# Support all orientations
+# Support iPhone and iPad
 
 # Note:
 just use ALFPSStatus for the DEBUG mode.

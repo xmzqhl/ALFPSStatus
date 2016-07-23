@@ -21,11 +21,24 @@
     [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
     [button addTarget:self action:@selector(endAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:button];
+    
+    button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.frame = CGRectMake(100, 200, 100, 70);
+    [button setTitle:@"Start" forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(startAction) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:button];
+    
 }
 
 - (void)endAction
 {
     [[ALFPSStatus shareInstance] end];
+}
+
+- (void)startAction
+{
+    [[ALFPSStatus shareInstance] start];
 }
 
 @end
