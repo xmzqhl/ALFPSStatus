@@ -98,7 +98,7 @@ static ALFPSStatus *shareInstance = nil;
         self.fpsLabel = [[UILabel alloc] init];
         self.fpsLabel.frame = CGRectMake(([UIScreen mainScreen].bounds.size.width - 55)/2.0+55, 0, 55, 20);
         self.fpsLabel.font = [UIFont boldSystemFontOfSize:12];
-        self.fpsLabel.textColor = [UIColor magentaColor];
+        self.fpsLabel.textColor = [UIColor greenColor];
         self.fpsLabel.textAlignment = NSTextAlignmentRight;
         self.fpsLabel.backgroundColor = [UIColor clearColor];
         
@@ -120,7 +120,15 @@ static ALFPSStatus *shareInstance = nil;
     }
     self.lastTime = link.timestamp;
     NSTimeInterval fps = self.count/interval;
-    self.fpsLabel.text = [NSString stringWithFormat:@"%d FPS", (int)round(fps)];
+    NSInteger fpsInteger = (NSInteger)round(fps);
+    self.fpsLabel.text = [NSString stringWithFormat:@"%@ FPS", @(fpsInteger)];
+    if (fpsInteger > 45) {
+        self.fpsLabel.textColor = [UIColor greenColor];
+    } else if (fpsInteger > 30) {
+        self.fpsLabel.textColor = [UIColor colorWithRed:255/255.0 green:215/255.0 blue:0/255.0 alpha:1];
+    } else {
+        self.fpsLabel.textColor = [UIColor redColor];
+    }
     self.count = 0;
 }
 
@@ -129,7 +137,12 @@ static ALFPSStatus *shareInstance = nil;
 #if TARGET_OS_SIMULATOR
     NSLog(@"ALFPSStatus has been stoped.Because it would make no sense for the simulator device.");
     return;
-#else
+#endif
+    
+#if !DEBUG
+    NSLog(@"Just use ALFPSStatus in the DEBUG mode.Don't use it for the Relese mode.");
+    return;
+#endif
     if (self.isStart) {
         return;
     }
@@ -152,7 +165,6 @@ static ALFPSStatus *shareInstance = nil;
     self.displayLink.paused = NO;
     
     self.isStart = YES;
-#endif
 }
 
 - (void)end
