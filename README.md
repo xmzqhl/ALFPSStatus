@@ -7,7 +7,7 @@ show FPS status on StatusBar
 * just drag the ALFPSStatus folder to your project,and all is done.
 
 # Support ARC only
-If you use MRC,you will get an error at compile time.
+If you use MRC,you will get an error at compile time.You can use -fobjc-arc flag.
 # Support all orientations
 # Support iPhone and iPad
 
