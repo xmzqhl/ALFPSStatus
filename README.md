@@ -16,3 +16,4 @@ just use ALFPSStatus for the DEBUG mode.
 # Screenshot like this:
 
 <img src="resources/screenshot.png" width="375" height="667">
+<img src="resources/screenshot1.png" width="667" height="375">
