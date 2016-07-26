@@ -92,7 +92,7 @@ static ALFPSStatus *shareInstance = nil;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActiveNotification) name:UIApplicationDidBecomeActiveNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActiveNotification) name:UIApplicationWillResignActiveNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidFinishLaunchingNotification) name:UIApplicationDidFinishLaunchingNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(UIApplicationWillChangeStatusBarOrientationNotification:) name:UIApplicationWillChangeStatusBarOrientationNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillChangeStatusBarOrientationNotification:) name:UIApplicationWillChangeStatusBarOrientationNotification object:nil];
         
         self.displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(displayLinkFired:)];
         self.displayLink.paused = YES;
@@ -159,8 +159,10 @@ static ALFPSStatus *shareInstance = nil;
         self.window.tag = 1000;
         self.window.hidden = NO;
     }
-    
+    self.fpsLabel.frame = CGRectMake((self.window.frame.size.width - 55)/2.0+55, 0, 55, 20);
     [self.window addSubview:self.fpsLabel];
+    
+    self.launchOrientation = [UIApplication sharedApplication].statusBarOrientation;
     
     if (!self.displayLink) {
         self.displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(displayLinkFired:)];
@@ -213,7 +215,7 @@ static ALFPSStatus *shareInstance = nil;
     }
 }
 
-- (void)UIApplicationWillChangeStatusBarOrientationNotification:(NSNotification *)noti
+- (void)applicationWillChangeStatusBarOrientationNotification:(NSNotification *)noti
 {
     NSInteger orientation = [noti.userInfo[UIApplicationStatusBarOrientationUserInfoKey] integerValue];
     if (isPad()) {
@@ -228,7 +230,10 @@ static ALFPSStatus *shareInstance = nil;
 
 - (void)transformInterfaceForOrientation:(UIInterfaceOrientation)orientation
 {
-    //此时的window坐标系以启动时的方向为准.
+    if (!self.isStart) {
+        return;
+    }
+    //此时的window坐标系以设置window时的界面方向为准.
     switch (self.launchOrientation) {
         case UIInterfaceOrientationPortrait:
             [self resetInterfaceForPortraitLanunchWithCurrentOrientation:orientation];
