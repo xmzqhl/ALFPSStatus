@@ -13,6 +13,8 @@
     #error This file must be compiled with ARC. Use -fobjc-arc flag (or convert project to ARC).
 #endif
 
+#define RADIANFORANGLE(x) ((x) * M_PI/180)
+
 @interface ALFPSStatus ()
 
 @property (nonatomic, strong) UIWindow *window;
@@ -22,6 +24,7 @@
 @property (nonatomic, strong) UILabel *fpsLabel;
 
 @property (nonatomic, assign) BOOL isStart;
+@property (nonatomic, assign) UIInterfaceOrientation launchOrientation;
 
 @end
 
@@ -103,6 +106,7 @@ static ALFPSStatus *shareInstance = nil;
         self.fpsLabel.backgroundColor = [UIColor clearColor];
         
         self.isStart = NO;
+        self.launchOrientation = UIInterfaceOrientationUnknown;
     }
     return self;
 }
@@ -149,7 +153,7 @@ static ALFPSStatus *shareInstance = nil;
 
     if (!self.window) {
         self.window = [[UIWindow alloc] init];
-        self.window.frame = [UIApplication sharedApplication].statusBarFrame;
+        self.window.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 20);
         self.window.windowLevel = UIWindowLevelStatusBar+1.0;
         self.window.backgroundColor = [UIColor clearColor];
         self.window.tag = 1000;
@@ -195,6 +199,7 @@ static ALFPSStatus *shareInstance = nil;
 - (void)applicationDidFinishLaunchingNotification
 {
     UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
+    self.launchOrientation = orientation;
     
     self.fpsLabel.frame = CGRectMake(([self screenWidthForOrientation:orientation]-55)/2.0+55, 0, 55, 20);
     
@@ -216,11 +221,36 @@ static ALFPSStatus *shareInstance = nil;
         frame.size.width = [self screenWidthForOrientation:orientation];
         self.window.frame = frame;
         self.fpsLabel.frame = CGRectMake(([self screenWidthForOrientation:orientation]-55)/2.0+55, 0, 55, 20);
-        return;
+    } else {
+        [self transformInterfaceForOrientation:orientation];
     }
-    
-    CGFloat screenWidth = MIN([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
+}
 
+- (void)transformInterfaceForOrientation:(UIInterfaceOrientation)orientation
+{
+    //此时的window坐标系以启动时的方向为准.
+    switch (self.launchOrientation) {
+        case UIInterfaceOrientationPortrait:
+            [self resetInterfaceForPortraitLanunchWithCurrentOrientation:orientation];
+            break;
+        case UIInterfaceOrientationLandscapeLeft:
+            [self resetInterfaceForLandscapeLeftLaunchWithCurrentOrientation:orientation];
+            break;
+        case UIInterfaceOrientationLandscapeRight:
+            [self resetInterfaceForLandscapeRightLaunchWithCurrentOrientation:orientation];
+            break;
+        case UIInterfaceOrientationPortraitUpsideDown:
+            break;
+        default:
+            NSLog(@"unknown orientation");
+            break;
+    }
+}
+
+- (void)resetInterfaceForPortraitLanunchWithCurrentOrientation:(UIInterfaceOrientation)orientation
+{
+    CGFloat screenWidth = MIN([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
+    
     CGFloat screenHeight = MAX([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
     switch (orientation) {
         case UIInterfaceOrientationPortrait:
@@ -229,16 +259,72 @@ static ALFPSStatus *shareInstance = nil;
             self.window.center = CGPointMake(screenWidth/2.0, 10);
             break;
         case UIInterfaceOrientationLandscapeLeft:
-            self.window.transform = CGAffineTransformMakeRotation(-90*M_PI/180);
+            self.window.transform = CGAffineTransformMakeRotation(RADIANFORANGLE(-90));
             self.window.center = CGPointMake(10, screenHeight/2.0);
             break;
         case UIInterfaceOrientationLandscapeRight:
-            self.window.transform = CGAffineTransformMakeRotation(90 * M_PI/180);
+            self.window.transform = CGAffineTransformMakeRotation(RADIANFORANGLE(90));
             self.window.center = CGPointMake(screenWidth-10, screenHeight/2.0);
             break;
         case UIInterfaceOrientationPortraitUpsideDown:
-            self.window.transform = CGAffineTransformMakeRotation(M_PI);
+            self.window.transform = CGAffineTransformMakeRotation(RADIANFORANGLE(180));
             self.window.center = CGPointMake(screenWidth/2.0, screenHeight-10);
+            break;
+        default:
+            NSLog(@"unknown orientation");
+            break;
+    }
+}
+
+- (void)resetInterfaceForLandscapeLeftLaunchWithCurrentOrientation:(UIInterfaceOrientation)orientation
+{
+    CGFloat screenWidth = MIN([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
+    
+    CGFloat screenHeight = MAX([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
+    switch (orientation) {
+        case UIInterfaceOrientationPortrait:
+            self.window.transform = CGAffineTransformMakeRotation(RADIANFORANGLE(90));
+            self.window.center = CGPointMake(screenHeight-10, screenWidth/2.0);
+            break;
+        case UIInterfaceOrientationLandscapeLeft:
+            self.window.transform = CGAffineTransformIdentity;
+            self.window.center = CGPointMake(screenHeight/2.0, 10);
+            break;
+        case UIInterfaceOrientationLandscapeRight:
+            self.window.transform = CGAffineTransformMakeRotation(RADIANFORANGLE(180));
+            self.window.center = CGPointMake(screenHeight/2.0, screenWidth-10);
+            break;
+        case UIInterfaceOrientationPortraitUpsideDown:
+            self.window.transform = CGAffineTransformMakeRotation(RADIANFORANGLE(-90));
+            self.window.center = CGPointMake(10, screenWidth/2.0);
+            break;
+        default:
+            NSLog(@"unknown orientation");
+            break;
+    }
+}
+
+- (void)resetInterfaceForLandscapeRightLaunchWithCurrentOrientation:(UIInterfaceOrientation)orientation
+{
+    CGFloat screenWidth = MIN([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
+    
+    CGFloat screenHeight = MAX([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
+    switch (orientation) {
+        case UIInterfaceOrientationPortrait:
+            self.window.transform = CGAffineTransformMakeRotation(RADIANFORANGLE(-90));
+            self.window.center = CGPointMake(10, screenWidth/2.0);
+            break;
+        case UIInterfaceOrientationLandscapeLeft:
+            self.window.transform = CGAffineTransformMakeRotation(RADIANFORANGLE(180));
+            self.window.center = CGPointMake(screenHeight/2.0, screenWidth-10);
+            break;
+        case UIInterfaceOrientationLandscapeRight:
+            self.window.transform = CGAffineTransformIdentity;
+            self.window.center = CGPointMake(screenHeight/2.0, 10);
+            break;
+        case UIInterfaceOrientationPortraitUpsideDown:
+            self.window.transform = CGAffineTransformMakeRotation(RADIANFORANGLE(90));
+            self.window.center = CGPointMake(screenHeight-10, screenWidth/2.0);
             break;
         default:
             NSLog(@"unknown orientation");
