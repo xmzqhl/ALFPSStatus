@@ -164,6 +164,10 @@ static ALFPSStatus *shareInstance = nil;
     
     self.launchOrientation = [UIApplication sharedApplication].statusBarOrientation;
     
+    if ([[UIDevice currentDevice].systemVersion floatValue] < 9.0) {
+        [self.displayLink invalidate];
+        self.displayLink = nil;
+    }
     if (!self.displayLink) {
         self.displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(displayLinkFired:)];
         [self.displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
@@ -200,12 +204,7 @@ static ALFPSStatus *shareInstance = nil;
 
 - (void)applicationDidFinishLaunchingNotification
 {
-    UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
-    self.launchOrientation = orientation;
-    
-    self.fpsLabel.frame = CGRectMake(([self screenWidthForOrientation:orientation]-55)/2.0+55, 0, 55, 20);
-    
-    if ([[UIDevice currentDevice].systemVersion floatValue] > 9.0) {
+    if ([[UIDevice currentDevice].systemVersion floatValue] >= 9.0) {
         __weak typeof(self) weakSelf = self;
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [weakSelf start];
