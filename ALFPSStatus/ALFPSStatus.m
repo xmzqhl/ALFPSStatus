@@ -161,6 +161,7 @@ static ALFPSStatus *shareInstance = nil;
         
         self.fpsLabel.frame = CGRectMake((self.window.frame.size.width - 55)/2.0+55, 0, 55, 20);
     }
+    
     [self.window addSubview:self.fpsLabel];
     
     if (self.launchOrientation == UIInterfaceOrientationUnknown) {
