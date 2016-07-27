@@ -158,11 +158,14 @@ static ALFPSStatus *shareInstance = nil;
         self.window.backgroundColor = [UIColor clearColor];
         self.window.tag = 1000;
         self.window.hidden = NO;
+        
+        self.fpsLabel.frame = CGRectMake((self.window.frame.size.width - 55)/2.0+55, 0, 55, 20);
     }
-    self.fpsLabel.frame = CGRectMake((self.window.frame.size.width - 55)/2.0+55, 0, 55, 20);
     [self.window addSubview:self.fpsLabel];
     
-    self.launchOrientation = [UIApplication sharedApplication].statusBarOrientation;
+    if (self.launchOrientation == UIInterfaceOrientationUnknown) {
+        self.launchOrientation = [UIApplication sharedApplication].statusBarOrientation;
+    }
     
     if ([[UIDevice currentDevice].systemVersion floatValue] < 9.0) {
         [self.displayLink invalidate];
@@ -179,12 +182,14 @@ static ALFPSStatus *shareInstance = nil;
 
 - (void)end
 {
-    [self.displayLink invalidate];
-    self.displayLink = nil;
-    
-    [self.fpsLabel removeFromSuperview];
-    
-    self.isStart = NO;
+    if (self.isStart) {
+        [self.displayLink invalidate];
+        self.displayLink = nil;
+        
+        [self.fpsLabel removeFromSuperview];
+        
+        self.isStart = NO;
+    }
 }
 
 #pragma mark - Notifications
@@ -229,10 +234,12 @@ static ALFPSStatus *shareInstance = nil;
 
 - (void)transformInterfaceForOrientation:(UIInterfaceOrientation)orientation
 {
-    if (!self.isStart) {
+    if (!self.window) {
         return;
     }
     //此时的window坐标系以设置window时的界面方向为准.
+    self.window.bounds = CGRectMake(0, 0, [self screenWidthForOrientation:orientation], 20);
+    self.fpsLabel.frame = CGRectMake((self.window.bounds.size.width-55)/2.0+55, 0, 55, 20);
     switch (self.launchOrientation) {
         case UIInterfaceOrientationPortrait:
             [self resetInterfaceForPortraitLanunchWithCurrentOrientation:orientation];
