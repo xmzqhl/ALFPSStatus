@@ -126,9 +126,9 @@ static ALFPSStatus *shareInstance = nil;
     NSTimeInterval fps = self.count/interval;
     NSInteger fpsInteger = (NSInteger)round(fps);
     self.fpsLabel.text = [NSString stringWithFormat:@"%@ FPS", @(fpsInteger)];
-    if (fpsInteger > 45) {
+    if (fpsInteger >= 45) {
         self.fpsLabel.textColor = [UIColor greenColor];
-    } else if (fpsInteger > 30) {
+    } else if (fpsInteger >= 30) {
         self.fpsLabel.textColor = [UIColor colorWithRed:255/255.0 green:215/255.0 blue:0/255.0 alpha:1];
     } else {
         self.fpsLabel.textColor = [UIColor redColor];
@@ -190,6 +190,9 @@ static ALFPSStatus *shareInstance = nil;
         [self.fpsLabel removeFromSuperview];
         
         self.isStart = NO;
+        
+        self.lastTime = 0;
+        self.count = 0;
     }
 }
 
@@ -205,6 +208,8 @@ static ALFPSStatus *shareInstance = nil;
 {
     if (self.displayLink) {
         self.displayLink.paused = YES;
+        self.lastTime = 0;
+        self.count = 0;
     }
 }
 
@@ -262,7 +267,6 @@ static ALFPSStatus *shareInstance = nil;
 - (void)resetInterfaceForPortraitLanunchWithCurrentOrientation:(UIInterfaceOrientation)orientation
 {
     CGFloat screenWidth = MIN([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
-    
     CGFloat screenHeight = MAX([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
     switch (orientation) {
         case UIInterfaceOrientationPortrait:
@@ -291,7 +295,6 @@ static ALFPSStatus *shareInstance = nil;
 - (void)resetInterfaceForLandscapeLeftLaunchWithCurrentOrientation:(UIInterfaceOrientation)orientation
 {
     CGFloat screenWidth = MIN([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
-    
     CGFloat screenHeight = MAX([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
     switch (orientation) {
         case UIInterfaceOrientationPortrait:
@@ -319,7 +322,6 @@ static ALFPSStatus *shareInstance = nil;
 - (void)resetInterfaceForLandscapeRightLaunchWithCurrentOrientation:(UIInterfaceOrientation)orientation
 {
     CGFloat screenWidth = MIN([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
-    
     CGFloat screenHeight = MAX([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
     switch (orientation) {
         case UIInterfaceOrientationPortrait:
