@@ -5,7 +5,7 @@ show FPS status on StatusBar
 
 # How to use?
 * Zero configuration
-* just drag the ALFPSStatus folder to your project,and all is done.
+* Just drag the ALFPSStatus folder to your project,and all is done.
 
 # Support ARC only
 If you use MRC,you will get an error at compile time.You can use -fobjc-arc flag.
