@@ -18,5 +18,5 @@ ALFPSStatus支持所有的iPhone、iPad、iPod touch设备
 只在DEBUG模式下使用ALFPSStatus,Release版本请移除。或者无需任何操作，ALFPSStatus会自动在Release环境中屏蔽相应的功能
 
 # 以下是屏幕截图:
-<img src="resources/screenshot.png" width="375" height="667">
-<img src="resources/screenshot1.png" width="667" height="375">
+<img src="resources/screenshot.png" width="375" height="667" border="1">
+<img src="resources/screenshot1.png" width="667" height="375" border="1">
