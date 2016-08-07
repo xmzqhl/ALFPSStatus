@@ -17,5 +17,5 @@ ALFPSStatus support all iPhone and iPad and all iPod touch devices.
 Just use ALFPSStatus for the DEBUG mode.For the Release environment you should remove the ALFPSStatus folder from your project.Or you can just ignore it.ALFPSStatus can automatically disable the corresponding function in the Release environment. 
 # Screenshot like this:
 
-<img src="resources/screenshot.png" width="375" height="667" border="2">
-<img src="resources/screenshot1.png" width="667" height="375" border="2">
+<img src="resources/screenshot.png" width="375" height="667" border="1">
+<img src="resources/screenshot1.png" width="667" height="375" border="1">
