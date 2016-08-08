@@ -113,11 +113,11 @@ static ALFPSStatus *shareInstance = nil;
 
 - (void)displayLinkFired:(CADisplayLink *)link
 {
-    self.count++;
     if (self.lastTime == 0) {
         self.lastTime = link.timestamp;
         return;
     }
+    self.count++;
     NSTimeInterval interval = link.timestamp - self.lastTime;
     if (interval < 1.0) {
         return;
