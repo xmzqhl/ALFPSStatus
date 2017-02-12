@@ -158,6 +158,7 @@ static ALFPSStatus *shareInstance = nil;
         self.window.backgroundColor = [UIColor clearColor];
         self.window.tag = 1000;
         self.window.hidden = NO;
+        self.window.userInteractionEnabled = NO;
         
         self.fpsLabel.frame = CGRectMake((self.window.frame.size.width - 55)/2.0+55, 0, 55, 20);
     }
