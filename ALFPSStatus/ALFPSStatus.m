@@ -147,6 +147,8 @@ static ALFPSStatus *shareInstance = nil;
     NSLog(@"Just use ALFPSStatus in the DEBUG mode.Don't use it for the Relese mode.");
     return;
 #endif
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunreachable-code"
     if (self.isStart) {
         return;
     }
@@ -180,6 +182,7 @@ static ALFPSStatus *shareInstance = nil;
     self.displayLink.paused = NO;
     
     self.isStart = YES;
+#pragma clang diagnostic pop
 }
 
 - (void)end
@@ -229,7 +232,7 @@ static ALFPSStatus *shareInstance = nil;
 - (void)applicationWillChangeStatusBarOrientationNotification:(NSNotification *)noti
 {
     NSInteger orientation = [noti.userInfo[UIApplicationStatusBarOrientationUserInfoKey] integerValue];
-    if (isPad()) {
+    if (al_isPad()) {
         CGRect frame = self.window.frame;
         frame.size.width = [self screenWidthForOrientation:orientation];
         self.window.frame = frame;
@@ -348,7 +351,7 @@ static ALFPSStatus *shareInstance = nil;
 }
 
 #pragma mark - Private
-BOOL isPad()
+BOOL al_isPad()
 {
     return (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
 }
