@@ -236,7 +236,7 @@ static ALFPSStatus *shareInstance = nil;
         CGRect frame = self.window.frame;
         frame.size.width = [self screenWidthForOrientation:orientation];
         self.window.frame = frame;
-        self.fpsLabel.frame = CGRectMake(([self screenWidthForOrientation:orientation]-55)/2.0+55, 0, 55, 20);
+        self.fpsLabel.frame = CGRectMake(([self screenWidthForOrientation:orientation]-45)/2.0+50, 0, 45, 20);
     } else {
         [self transformInterfaceForOrientation:orientation];
     }
@@ -249,7 +249,7 @@ static ALFPSStatus *shareInstance = nil;
     }
     //此时的window坐标系以设置window时的界面方向为准.
     self.window.bounds = CGRectMake(0, 0, [self screenWidthForOrientation:orientation], 20);
-    self.fpsLabel.frame = CGRectMake((self.window.bounds.size.width-55)/2.0+55, 0, 55, 20);
+    self.fpsLabel.frame = CGRectMake((self.window.bounds.size.width-45)/2.0+50, 0, 45, 20);
     switch (self.launchOrientation) {
         case UIInterfaceOrientationPortrait:
             [self resetInterfaceForPortraitLanunchWithCurrentOrientation:orientation];
