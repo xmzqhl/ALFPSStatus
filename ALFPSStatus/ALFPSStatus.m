@@ -99,7 +99,7 @@ static ALFPSStatus *shareInstance = nil;
         [self.displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
         
         self.fpsLabel = [[UILabel alloc] init];
-        self.fpsLabel.frame = CGRectMake(([UIScreen mainScreen].bounds.size.width - 55)/2.0+55, 0, 55, 20);
+        self.fpsLabel.frame = CGRectMake(([UIScreen mainScreen].bounds.size.width - 45)/2.0+50, 0, 45, 20);
         self.fpsLabel.font = [UIFont boldSystemFontOfSize:12];
         self.fpsLabel.textColor = [UIColor greenColor];
         self.fpsLabel.textAlignment = NSTextAlignmentRight;
@@ -162,7 +162,7 @@ static ALFPSStatus *shareInstance = nil;
         self.window.hidden = NO;
         self.window.userInteractionEnabled = NO;
         
-        self.fpsLabel.frame = CGRectMake((self.window.frame.size.width - 55)/2.0+55, 0, 55, 20);
+        self.fpsLabel.frame = CGRectMake((self.window.frame.size.width - 45)/2.0+50, 0, 45, 20);
     }
     
     [self.window addSubview:self.fpsLabel];
