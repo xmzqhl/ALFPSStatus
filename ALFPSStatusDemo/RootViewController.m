@@ -15,6 +15,9 @@
 {
     [super viewDidLoad];
     
+    self.view.backgroundColor = [UIColor whiteColor];
+    self.navigationItem.title = @"Root";
+    
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.frame = CGRectMake(100, 100, 100, 70);
     [button setTitle:@"End" forState:UIControlStateNormal];
@@ -28,7 +31,11 @@
     [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
     [button addTarget:self action:@selector(startAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:button];
-    
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    return NO;
 }
 
 - (void)endAction
